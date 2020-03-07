@@ -1,0 +1,26 @@
+@font-face {
+  font-family: 'JetBrainsMono Nerd Font';
+  src: url('https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/JetBrainsMono/Regular/complete/JetBrains Mono Regular Nerd Font Complete.ttf?raw=true') format('truetype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'JetBrainsMono Nerd Font';
+  src: url('https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/JetBrainsMono/Bold/complete/JetBrains Mono Bold Nerd Font Complete.ttf?raw=true') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'JetBrainsMono Nerd Font';
+  src: url('https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/JetBrainsMono/Italic/complete/JetBrains Mono Italic Nerd Font Complete.ttf?raw=true') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'JetBrainsMono Nerd Font';
+  src: url('https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/JetBrainsMono/Bold-Italic/complete/JetBrains Mono Bold Italic Nerd Font Complete.ttf?raw=true') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
