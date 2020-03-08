@@ -1,3 +1,5 @@
+import { React } from 'uebersicht'
+
 export const command = `
 BATTERY=$(pmset -g batt | egrep '(\\d+)\%' -o | cut -f1 -d%)
 IS_CHARGING=$(if [[ $(pmset -g ps | head -1) =~ "AC" ]]; then echo "true"; else echo "false"; fi)
@@ -5,12 +7,14 @@ IS_CHARGING=$(if [[ $(pmset -g ps | head -1) =~ "AC" ]]; then echo "true"; else 
 VOLUME=$(osascript -e 'output volume of (get volume settings)')
 IS_MUTED=$(osascript -e 'output muted of (get volume settings)')
 
+SSID=$(/System/Library/PrivateFrameworks/Apple80211.framework/Resources/airport -I | awk -F': ' '/ SSID/ {print $2}')
 WIFI_STATUS=$(if [ -n "$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport -I | grep AirPort | cut -d ':' -f2)" ]; then echo "false"; else echo "true"; fi)
 
 echo $(cat <<-EOF
 {
     "volume": $VOLUME,
     "ismuted": $IS_MUTED,
+    "ssid": "$SSID",
     "wifistatus": $WIFI_STATUS,
     "ischarging": $IS_CHARGING
 }
@@ -29,7 +33,7 @@ export const className=`
     background-color: #202020;
     font-family: 'JetBrainsMono Nerd Font', monospace;
     font-size: 13px;
-    color: #a8a8a8;
+    color: #fafafa;
     whitespace: nowrap;
 `
 
@@ -42,13 +46,12 @@ const style = {
 
 export const render = ({ output }) => {
   const outputObj = parseOutput(output);
-  const date = new Date();
   return (
     <div style={{width:'100%', bottom: 2, overflow: 'hidden', position: 'fixed'}}>
       <div style={{height: '100%', width: '100%', display: 'flex', justifyContent: 'space-evenly', whiteSpace: 'nowrap'}}>
-        <div style={style}>{`\uFAA8 WiFi: ${outputObj.wifistatus ? "on" : "off"}`}</div>
-        <div style={style}>{`\uFA7D Volume: ${outputObj.volume}, mute: ${outputObj.ismuted ? "on" : "off"}`}</div>
-        <div style={style}>{`\uF5EC ${date.toLocaleDateString()}(${toDayStr(date.getDay())})`}</div>
+        <WiFi style={style} output={outputObj}/>
+        <Volume style={style} output={outputObj}/>
+        <Calendar style={style} />
       </div>
     </div>
   )
@@ -83,3 +86,54 @@ function parseOutput(output) {
   }
 }
 
+class WiFi extends React.Component {
+  render() {
+    const output = this.props.output
+    if (output.wifistatus) {
+      if (output.ssid === '') {
+        return (
+          <div>{`\uFD15 Valid network does not exist`}</div>
+        )
+      } else {
+        return (
+          <div>{`\uFAA8 WiFi: ${output.ssid}`}</div>
+        )
+      }
+    } else {
+      return (
+        <div>{`\uFAA9 WiFi is disabled`}</div>
+      )
+    }
+  }
+}
+
+class Volume extends React.Component {
+  render() {
+    const output = this.props.output
+    const volumeIcon = () => {
+      if (output.ismuted) {
+        return '\uFC5D'
+      } else {
+        if (output.volume === 0) {
+          return '\uFA7E'
+        } else if (output.volume <= 60) {
+          return '\uFA7F'
+        } else {
+          return '\uFA7D'
+        }
+      }
+    }
+    return (
+      <div>{`${volumeIcon()} VOLUME: ${output.volume}, MUTE: ${output.ismuted ? "ON" : "OFF"}`}</div>
+    )
+  }
+}
+
+class Calendar extends React.Component {
+  render() {
+    const date = new Date();
+    return (
+      <div>{`\uF5EC ${date.toLocaleDateString()}(${toDayStr(date.getDay())})`}</div>
+    )
+  }
+}
