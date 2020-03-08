@@ -46,9 +46,9 @@ export const render = ({ output }) => {
   return (
     <div style={{width:'100%', bottom: 2, overflow: 'hidden', position: 'fixed'}}>
       <div style={{height: '100%', width: '100%', display: 'flex', justifyContent: 'space-evenly', whiteSpace: 'nowrap'}}>
-        <div style={style}>{`\uF1EB WiFi: ${outputObj.wifistatus ? "on" : "off"}`}</div>
-        <div style={style}>{`\uF028 Volume: ${outputObj.volume}, mute: ${outputObj.ismuted ? "on" : "off"}`}</div>
-        <div style={style}>{`\uF073 ${date.toLocaleDateString()}(${toDayStr(date.getDate())})`}</div>
+        <div style={style}>{`\uFAA8 WiFi: ${outputObj.wifistatus ? "on" : "off"}`}</div>
+        <div style={style}>{`\uFA7D Volume: ${outputObj.volume}, mute: ${outputObj.ismuted ? "on" : "off"}`}</div>
+        <div style={style}>{`\uF5EC ${date.toLocaleDateString()}(${toDayStr(date.getDay())})`}</div>
       </div>
     </div>
   )
@@ -56,19 +56,19 @@ export const render = ({ output }) => {
 
 function toDayStr(day) {
   switch (day) {
-    case 1:
+    case 0:
       return 'Sunday'
-    case 2:
+    case 1:
       return 'Monday'
-    case 3:
+    case 2:
       return 'Tuesday'
-    case 4:
+    case 3:
       return 'Wednesday'
-    case 5:
+    case 4:
       return 'Thursday'
-    case 6:
+    case 5:
       return 'Friday'
-    case 7:
+    case 6:
       return 'Saturday'
     default:
       return ''
