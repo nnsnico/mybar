@@ -1,4 +1,4 @@
-import { React } from 'uebersicht'
+import { css, React } from 'uebersicht'
 
 export const command = `
 BATTERY=$(pmset -g batt | egrep '(\\d+)\%' -o | cut -f1 -d%)
@@ -39,19 +39,23 @@ export const className=`
 
 export const refreshFrequency = 1000
 
-const style = {
-  left: "20px",
-  top: "20px"
-}
+const componentStyle = css`
+  left: 20px;
+  top: 20p;
+`
 
 export const render = ({ output }) => {
   const outputObj = parseOutput(output);
   return (
     <div style={{width:'100%', bottom: 2, overflow: 'hidden', position: 'fixed'}}>
       <div style={{height: '100%', width: '100%', display: 'flex', justifyContent: 'space-evenly', whiteSpace: 'nowrap'}}>
-        <WiFi style={style} output={outputObj}/>
-        <Volume style={style} output={outputObj}/>
-        <Calendar style={style} />
+        <div style={{flex: 1}} />
+        <WiFi className={componentStyle} output={outputObj}/>
+        <div style={{width: '30px'}}/>
+        <Volume className={componentStyle} output={outputObj}/>
+        <div style={{width: '30px'}}/>
+        <Calendar className={componentStyle} />
+        <div style={{width: '15px'}}/>
       </div>
     </div>
   )
@@ -92,16 +96,25 @@ class WiFi extends React.Component {
     if (output.wifistatus) {
       if (output.ssid === '') {
         return (
-          <div>{`\uFD15 Valid network does not exist`}</div>
+          <div>
+            <span style={{color: '#FFFF00'}}>{`\uFD15`}</span>
+            <span>{` Valid network does not exist`}</span>
+          </div>
         )
       } else {
         return (
-          <div>{`\uFAA8 WiFi: ${output.ssid}`}</div>
+          <div>
+            <span style={{color: '#76FF03'}}>{`\uFAA8`}</span>
+            <span>{` ${output.ssid}`}</span>
+          </div>
         )
       }
     } else {
       return (
-        <div>{`\uFAA9 WiFi is disabled`}</div>
+        <div>
+          <span style={{color: '#FF4081'}}>{`\uFAA9`}</span>
+          <span>{` WiFi is disabled`}</span>
+        </div>
       )
     }
   }
@@ -123,9 +136,23 @@ class Volume extends React.Component {
         }
       }
     }
-    return (
-      <div>{`${volumeIcon()} VOLUME: ${output.volume}, MUTE: ${output.ismuted ? "ON" : "OFF"}`}</div>
-    )
+    if (output.ismuted) {
+      return (
+        <div>{`\uFC5D MUTE`}</div>
+      )
+    } else {
+      let icon = ''
+      if (output.volume === 0) {
+        icon = '\uFA7E'
+      } else if (output.volume <= 60) {
+        icon = '\uFA7F'
+      } else {
+        icon = '\uFA7D'
+      }
+      return (
+        <div>{`${icon} ${output.volume}`}</div>
+      )
+    }
   }
 }
 
