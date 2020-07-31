@@ -1,11 +1,22 @@
-import { css, React } from 'uebersicht'
+import {css, React} from 'uebersicht'
 
 export const command = `
 BATTERY=$(pmset -g batt | egrep '(\\d+)\%' -o | cut -f1 -d%)
 IS_CHARGING=$(if [[ $(pmset -g ps | head -1) =~ "AC" ]]; then echo "true"; else echo "false"; fi)
 
-VOLUME=$(osascript -e 'output volume of (get volume settings)')
-IS_MUTED=$(osascript -e 'output muted of (get volume settings)')
+volume=$(osascript -e 'output volume of (get volume settings)')
+if [[ $volume != "missing value" ]]; then
+  VOLUME=$volume
+else
+  VOLUME='"Device could not be detected"'
+fi
+
+is_muted=$(osascript -e 'output muted of (get volume settings)')
+if [[ $is_muted != "missing value" ]]; then
+  IS_MUTED=$is_muted
+else
+  IS_MUTED='false'
+fi
 
 SSID=$(/System/Library/PrivateFrameworks/Apple80211.framework/Resources/airport -I | awk -F': ' '/ SSID/ {print $2}')
 WIFI_STATUS=$(if [ -n "$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport -I | grep AirPort | cut -d ':' -f2)" ]; then echo "false"; else echo "true"; fi)
@@ -22,7 +33,7 @@ EOF
 );
 `
 
-export const className=`
+export const className = `
     @import url('https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css');
     @import url('font.css');
     bottom: 0;
@@ -44,18 +55,18 @@ const componentStyle = css`
   top: 20p;
 `
 
-export const render = ({ output }) => {
+export const render = ({output}) => {
   const outputObj = parseOutput(output);
   return (
-    <div style={{width:'100%', bottom: 2, overflow: 'hidden', position: 'fixed'}}>
+    <div style={{width: '100%', bottom: 2, overflow: 'hidden', position: 'fixed'}}>
       <div style={{height: '100%', width: '100%', display: 'flex', justifyContent: 'space-evenly', whiteSpace: 'nowrap'}}>
         <div style={{flex: 1}} />
-        <WiFi className={componentStyle} output={outputObj}/>
-        <div style={{width: '30px'}}/>
-        <Volume className={componentStyle} output={outputObj}/>
-        <div style={{width: '30px'}}/>
+        <WiFi className={componentStyle} output={outputObj} />
+        <div style={{width: '30px'}} />
+        <Volume className={componentStyle} output={outputObj} />
+        <div style={{width: '30px'}} />
         <Calendar className={componentStyle} />
-        <div style={{width: '15px'}}/>
+        <div style={{width: '15px'}} />
       </div>
     </div>
   )
