@@ -134,36 +134,20 @@ class WiFi extends React.Component {
 class Volume extends React.Component {
   render() {
     const output = this.props.output
-    const volumeIcon = () => {
+    const format = () => {
       if (output.ismuted) {
-        return '\uFC5D'
+        return `\uFC5D MUTE`
       } else {
         if (output.volume === 0) {
-          return '\uFA7E'
+          return `\uFA7E ${output.volume}`
         } else if (output.volume <= 60) {
-          return '\uFA7F'
+          return `\uFA7F ${output.volume}`
         } else {
-          return '\uFA7D'
+          return `\uFA7D ${output.volume}`
         }
       }
     }
-    if (output.ismuted) {
-      return (
-        <div>{`\uFC5D MUTE`}</div>
-      )
-    } else {
-      let icon = ''
-      if (output.volume === 0) {
-        icon = '\uFA7E'
-      } else if (output.volume <= 60) {
-        icon = '\uFA7F'
-      } else {
-        icon = '\uFA7D'
-      }
-      return (
-        <div>{`${icon} ${output.volume}`}</div>
-      )
-    }
+    return <div>{format()}</div>
   }
 }
 
