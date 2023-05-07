@@ -108,14 +108,14 @@ class WiFi extends React.Component {
       if (output.ssid === '') {
         return (
           <div>
-            <span style={{color: '#FFFF00'}}>{`\uFD15`}</span>
+            <span style={{color: '#FFFF00'}}>{`\uDB82\uDC17`}</span>
             <span>{` Valid network does not exist`}</span>
           </div>
         )
       } else {
         return (
           <div>
-            <span style={{color: '#76FF03'}}>{`\uFAA8`}</span>
+            <span style={{color: '#76FF03'}}>{`\uDB81\uDDA9`}</span>
             <span>{` ${output.ssid}`}</span>
           </div>
         )
@@ -123,7 +123,7 @@ class WiFi extends React.Component {
     } else {
       return (
         <div>
-          <span style={{color: '#FF4081'}}>{`\uFAA9`}</span>
+          <span style={{color: '#FF4081'}}>{`\uDB81\uDDAA`}</span>
           <span>{` WiFi is disabled`}</span>
         </div>
       )
@@ -136,14 +136,14 @@ class Volume extends React.Component {
     const output = this.props.output
     const format = () => {
       if (output.ismuted) {
-        return `\uFC5D MUTE`
+        return `\uDB81\uDF5F MUTE`
       } else {
         if (output.volume === 0) {
-          return `\uFA7E ${output.volume}`
+          return `\uDB81\uDD7F ${output.volume}`
         } else if (output.volume <= 60) {
-          return `\uFA7F ${output.volume}`
+          return `\uDB81\uDD80 ${output.volume}`
         } else {
-          return `\uFA7D ${output.volume}`
+          return `\uDB81\uDD7E ${output.volume}`
         }
       }
     }
@@ -155,7 +155,7 @@ class Calendar extends React.Component {
   render() {
     const date = new Date();
     return (
-      <div>{`\uF5EC ${date.toLocaleDateString()}(${toDayStr(date.getDay())})`}</div>
+      <div>{`\uDB80\uDCED ${date.toLocaleDateString()}(${toDayStr(date.getDay())})`}</div>
     )
   }
 }
